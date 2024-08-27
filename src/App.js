@@ -1,25 +1,30 @@
-import logo from './logo.svg';
+import React, { useRef, useEffect, useState } from 'react';
 import './App.css';
+import { select } from 'd3';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  
+  const [data,setData] = useState([25, 30, 45, 60, 20])
+  const svgRef = useRef()
+
+  useEffect(()=> {
+    const svg = select(svgRef.current)
+    svg.selectAll("circle")
+    .data(data)
+    .join("circle")
+    .attr("r", value => value)
+    .attr("cx", value => value * 2)
+    .attr("cy", value => value * 2)
+  },[data])
+
+   return (
+    <React.Fragment>
+      <svg ref={svgRef}></svg>
+      <br/>
+      <button onClick={() => setData(data.map(value => value + 5))}>Update Data</button>
+    </React.Fragment>
+   )
+  
 }
 
 export default App;
