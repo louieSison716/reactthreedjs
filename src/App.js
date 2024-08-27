@@ -1,30 +1,27 @@
-import React, { useRef, useEffect, useState } from 'react';
-import './App.css';
-import { select } from 'd3';
+import React, { useState } from "react";
+// import Video from "./Video";
+import GeoChart from "./GeoChart";
+import data from "./GeoChart.world.geo.json";
+import "./App.css";
 
 function App() {
-  
-  const [data,setData] = useState([25, 30, 45, 60, 20])
-  const svgRef = useRef()
-
-  useEffect(()=> {
-    const svg = select(svgRef.current)
-    svg.selectAll("circle")
-    .data(data)
-    .join("circle")
-    .attr("r", value => value)
-    .attr("cx", value => value * 2)
-    .attr("cy", value => value * 2)
-  },[data])
-
-   return (
+  const [property, setProperty] = useState("pop_est");
+  return (
     <React.Fragment>
-      <svg ref={svgRef}></svg>
-      <br/>
-      <button onClick={() => setData(data.map(value => value + 5))}>Update Data</button>
+      <h2>World Map with d3-geo</h2>
+      <GeoChart data={data} property={property} />
+      <h2>Select property to highlight</h2>
+      <select
+        value={property}
+        onChange={event => setProperty(event.target.value)}
+      >
+        <option value="pop_est">Population</option>
+        <option value="name_len">Name length</option>
+        <option value="gdp_md_est">GDP</option>
+      </select>
+      {/* <Video /> */}
     </React.Fragment>
-   )
-  
+  );
 }
 
 export default App;
